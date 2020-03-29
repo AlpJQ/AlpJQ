@@ -6,21 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>第六篇 | 嘉升のblog</title>
+  <title>Java内存模型JMM | 嘉升のblog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="keep walking">
+  <meta name="description" content="原理初探在学习计算机组成原理的时候，我们都知道CPU的运行速度和内存不是一个级别的，CPU的速度非常快，为了缓解两者之间速度不一致的问题，我们在CPU和内存之间加了缓存。CPU执行过程中需要的数据，先从缓存中拿，如果命中了就直接拿，否则就从内存上读取，并放在缓存上面。缓存分为一级缓存（L1 Cache），二级缓存（L2 Cache）和三级缓存（L3 Cache）。在多个缓存的情况下，为了保证这些缓">
 <meta property="og:type" content="article">
-<meta property="og:title" content="第六篇">
+<meta property="og:title" content="Java内存模型JMM">
 <meta property="og:url" content="http://yoursite.com/2019/06/02/%E7%AC%AC%E5%85%AD%E7%AF%87/index.html">
 <meta property="og:site_name" content="嘉升のblog">
-<meta property="og:description" content="keep walking">
+<meta property="og:description" content="原理初探在学习计算机组成原理的时候，我们都知道CPU的运行速度和内存不是一个级别的，CPU的速度非常快，为了缓解两者之间速度不一致的问题，我们在CPU和内存之间加了缓存。CPU执行过程中需要的数据，先从缓存中拿，如果命中了就直接拿，否则就从内存上读取，并放在缓存上面。缓存分为一级缓存（L1 Cache），二级缓存（L2 Cache）和三级缓存（L3 Cache）。在多个缓存的情况下，为了保证这些缓">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/03/23/8Tnl1U.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/03/23/8Tuubd.png">
 <meta property="article:published_time" content="2019-06-02T11:44:09.000Z">
-<meta property="article:modified_time" content="2020-03-22T16:32:20.311Z">
+<meta property="article:modified_time" content="2020-03-23T02:56:54.716Z">
 <meta property="article:author" content="嘉升のblog">
-<meta property="article:tag" content="数据结构">
-<meta property="article:tag" content="算法">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="JMM">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/03/23/8Tnl1U.png">
   
     <link rel="alternative" href="/atom.xml" title="嘉升のblog" type="application/atom+xml">
   
@@ -167,7 +170,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      第六篇
+      Java内存模型JMM
     </h1>
   
 
@@ -190,7 +193,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-keyboard-o"></i>
         <span class="post-meta-item-text">  字数统计: </span>
-        <span class="post-count">0字</span>
+        <span class="post-count">2.1k字</span>
       </span>
     </span>
 
@@ -199,7 +202,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-hourglass-half"></i>
         <span class="post-meta-item-text">  阅读时长: </span>
-        <span class="post-count">1分</span>
+        <span class="post-count">7分</span>
       </span>
     </span>
 </div>
@@ -213,7 +216,70 @@
       
 
         
-          
+          <h2 id="原理初探"><a href="#原理初探" class="headerlink" title="原理初探"></a>原理初探</h2><p>在学习计算机组成原理的时候，我们都知道CPU的运行速度和内存不是一个级别的，CPU的速度非常快，为了缓解两者之间速度不一致的问题，我们在CPU和内存之间加了缓存。CPU执行过程中需要的数据，先从缓存中拿，如果命中了就直接拿，否则就从内存上读取，并放在缓存上面。<br>缓存分为一级缓存（L1 Cache），二级缓存（L2 Cache）和三级缓存（L3 Cache）。在多个缓存的情况下，为了保证这些缓存的数据一致，所以它们都必须遵守一些协议，常见的如MSI,MESI,MOSI等。<br>其中MESI保证每个缓存使用的共享变量的副本是一致的。核心思想：当CPU写数据时，如果发现操作的是共享变量，即在其他CPU中也存在该变量的副本，会发出信号通知其他CPU将该变量的缓存行置为无效状态，则当其他CPU读取这个变量是，发现自己缓存中缓存该变量的缓存行是无效的，那么它就要从主内存中重新读取。</p>
+<h2 id="JMM在同步的约定"><a href="#JMM在同步的约定" class="headerlink" title="JMM在同步的约定"></a>JMM在同步的约定</h2><ol>
+<li>线程解锁前，必须把共享变量立刻刷回主存</li>
+<li>线程加锁前，必须读取主存中的最新值到工作内存中</li>
+<li>加锁和解锁是同一把锁</li>
+</ol>
+<p>【分析】下面JMM示意图中，工作内存就是每个线程自己的本地内存，每个线程优先访问工作内存，处理完之后再把工作内存向主内存进行刷新同步。</p>
+<h4 id="工作内存和主内存之间有8种原子操作："><a href="#工作内存和主内存之间有8种原子操作：" class="headerlink" title="工作内存和主内存之间有8种原子操作："></a>工作内存和主内存之间有8种原子操作：</h4><p>read：在主内存中，读取变量到工作内存</p>
+<p>load：在工作内存中，把read操作从主内存中读取的变量，放入到工作内存中的变量副本中</p>
+<p>use：在工作内存中，把工作内存中的一个变量值传递给执行引擎，每当JVM遇到一个需要使用变量的值的字节码指令时将会执行这个操作。</p>
+<p>assign：在工作内存中，把一个执行引擎接收到的值赋值给工作内存中的变量，每当JVM遇到一个给变量赋值的字节码指令时将会执行这个操作。</p>
+<p>store：把工作内存中的一个变量的值传送到主内存中，以便随后的write的操作。</p>
+<p>write：作用于主内存的变量，它把store操作从工作内存中一个变量的值传送到主内存的变量中。</p>
+<p>lock：作用于主内存的变量，把一个变量标识为一条线程独占状态。</p>
+<p>unlock：作用于主内存变量，把一个处于锁定状态的变量释放出来，释放后的变量才可以被其他线程锁定。</p>
+<p><img src="https://s1.ax1x.com/2020/03/23/8Tnl1U.png" alt="avator"></p>
+<p>除此之外，Java内存模型还还规定了在执行上述8种基本操作时必须满足以下规则;</p>
+<ul>
+<li>如果要把一个变量从主内存中复制到工作内存，就需要按顺寻地执行read和load操作， 如果把变量从工作内存中同步回主内存中，就要按顺序地执行store和write操作。但Java内存模型只要求上述操作必须按顺序执行，而没有保证必须是连续执行。</li>
+<li>不允许read和load、store和write操作之一单独出现</li>
+<li>不允许一个线程丢弃它的最近assign的操作，即变量在工作内存中改变了之后必须同步到主内存中。</li>
+<li>不允许一个线程无原因地（没有发生过任何assign操作）把数据从工作内存同步回主内存中。</li>
+<li>一个新的变量只能在主内存中诞生，不允许在工作内存中直接使用一个未被初始化（load或assign）的变量。即就是对一个变量实施use和store操作之前，必须先执行过了assign和load操作。</li>
+<li>一个变量在同一时刻只允许一条线程对其进行lock操作，但lock操作可以被同一条线程重复执行多次，多次执行lock后，只有执行相同次数的unlock操作，变量才会被解锁。lock和unlock必须成对出现</li>
+<li>如果对一个变量执行lock操作，将会清空工作内存中此变量的值，在执行引擎使用这个变量前需要重新执行load或assign操作初始化变量的值</li>
+<li>如果一个变量事先没有被lock操作锁定，则不允许对它执行unlock操作；也不允许去unlock一个被其他线程锁定的变量。<br>对一个变量执行unlock操作之前，必须先把此变量同步到主内存中（执行store和write操作）。</li>
+</ul>
+<h3 id="先行发生原则"><a href="#先行发生原则" class="headerlink" title="先行发生原则"></a>先行发生原则</h3><p>happens-before原则，它是判断数据是否存在竞争，线程是否安全的主要依据，依靠这个原则，我们可以通过几条规则一揽子地解决并发环境下两个操作之间是否可能存在冲突的所有问题。</p>
+<ol>
+<li>程序次序规则：一个线程内，按照代码顺序，书写在前面的操作先行发生于书写在后面的操作，准确来说是控制流程顺序，还要考虑分支和循环操作。</li>
+<li>锁定规则：一个unLock操作先行发生于后面对同一个锁额lock操作。</li>
+<li>volatile变量规则：对一个变量的写操作先行发生于后面对这个变量的读操作。</li>
+<li>传递规则：如果操作A先行发生于操作B，而操作B又先行发生于操作C，则可以得出操作A先行发生于操作C。</li>
+<li>线程启动规则：Thread对象的start()方法先行发生于此线程的每个一个动作。</li>
+<li>线程中断规则：对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生。</li>
+<li>线程终结规则：线程中所有的操作都先行发生于线程的终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行。</li>
+<li>对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始。</li>
+</ol>
+<h3 id="volatile是Java虚拟提供的轻量级的同步机制"><a href="#volatile是Java虚拟提供的轻量级的同步机制" class="headerlink" title="volatile是Java虚拟提供的轻量级的同步机制"></a>volatile是Java虚拟提供的轻量级的同步机制</h3><p><strong>特性：</strong></p>
+<ol>
+<li>可见性</li>
+<li>不保证原子性</li>
+<li>禁止指令重排</li>
+</ol>
+<h4 id="volatile读的内存语义："><a href="#volatile读的内存语义：" class="headerlink" title="volatile读的内存语义："></a>volatile读的内存语义：</h4><p>当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效。线程接下来姜葱主内存中读取共享变量。</p>
+<h4 id="volatile写的内存语义："><a href="#volatile写的内存语义：" class="headerlink" title="volatile写的内存语义："></a>volatile写的内存语义：</h4><p>当写一个volatie变量时，JMM会把该线程对应的本地内存中的共享变量值刷新到主内存。</p>
+<ol>
+<li>可见性<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jiasheng.vl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JMMDemo</span> </span>&#123;</span><br><span class="line">    <span class="comment">//不用volatile修饰的话，不能保证num的更新及时被其他线程发现，所以下面一个线程会一直在while中死循环</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">while</span>(num == <span class="number">0</span>)&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        num = <span class="number">1</span>;</span><br><span class="line">        System.out.println(num);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+输出结果：程序正常结束！</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/03/23/8Tuubd.png" alt="avator"></p>
+<ol start="2">
+<li><p>不保证原子性</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jiasheng.vl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestVolatile2</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> AtomicInteger num = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//num++；不是原子性擦操作</span></span><br><span class="line">        num.incrementAndGet(); <span class="comment">// AtomicInteger +1方法，底层是CAS</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">5000</span>; j++) &#123;</span><br><span class="line">                    add();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(Thread.activeCount() &gt; <span class="number">2</span>)&#123; <span class="comment">//main gc</span></span><br><span class="line">            Thread.yield();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(num);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>禁止指令重排<br>处理器在执行指令重排的时候，要考虑数据之间的依赖性。</p>
+</li>
+</ol>
+<p>比如：定义某个变量的语句还未执行，而包含有这个变量的语句不能提前执行</p>
+<p>volatile由于内存屏障，可以保证避免指令重排的现象发生。</p>
+<blockquote>
+<p>参考：《Java并发编程的艺术》，《深入理解Java虚拟机》</p>
+</blockquote>
+
         
       
     </div>
@@ -225,11 +291,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JMM</a>
         		</li>
       		
 		</ul>
@@ -241,7 +307,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
+        			<a href="/categories/Java虚拟机//" class="article-tag-list-link color3">Java虚拟机</a>
         		</li>
       		
 		</ul>
@@ -349,7 +415,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    目录，不存在的…
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#原理初探"><span class="toc-number">1.</span> <span class="toc-text">原理初探</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JMM在同步的约定"><span class="toc-number">2.</span> <span class="toc-text">JMM在同步的约定</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#工作内存和主内存之间有8种原子操作："><span class="toc-number">2.0.1.</span> <span class="toc-text">工作内存和主内存之间有8种原子操作：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#先行发生原则"><span class="toc-number">2.1.</span> <span class="toc-text">先行发生原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#volatile是Java虚拟提供的轻量级的同步机制"><span class="toc-number">2.2.</span> <span class="toc-text">volatile是Java虚拟提供的轻量级的同步机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#volatile读的内存语义："><span class="toc-number">2.2.1.</span> <span class="toc-text">volatile读的内存语义：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#volatile写的内存语义："><span class="toc-number">2.2.2.</span> <span class="toc-text">volatile写的内存语义：</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -512,6 +578,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">多线程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JMM</a>
               </li>
             
             <div class="clearfix"></div>
