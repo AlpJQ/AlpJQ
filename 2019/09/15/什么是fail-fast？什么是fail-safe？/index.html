@@ -6,25 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>在Ubuntu环境下执行sudo apt-get update出现无法获得锁 /var/lib/apt/lists/lock - open的问题解决方法 | 嘉升のblog</title>
+  <title>什么是fail-fast？什么是fail-safe？ | 嘉升のblog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="步骤： 执行ps -e | grep apt找到占用系统源更新时的系统锁的进程  2.结束占用它的线程，输入命令sudo kill 进程ID号再次执行 ps -e | grep apt，发现已经没有占用apt -get的进程了  输入sudo apt-get update，成功！">
+  <meta name="description" content="什么是fail-fast？什么是fail-safe？fail-fast快速失效机制。这是在Java集合框架中的一种机制。当多个线程对同一个集合的内容进行操作时（并发操作），就可能会产生fail-fast事件。例如：当某一个线程A通过iterator去遍历某集合的过程中，若该集合的内容被其他线程所改变了；那么线程A访问集合时，就会抛出ConcurrentModificationException异常">
 <meta property="og:type" content="article">
-<meta property="og:title" content="在Ubuntu环境下执行sudo apt-get update出现无法获得锁 &#x2F;var&#x2F;lib&#x2F;apt&#x2F;lists&#x2F;lock - open的问题解决方法">
-<meta property="og:url" content="http://yoursite.com/2019/09/15/%E6%89%A7%E8%A1%8Csudo%20apt-get%20update%E5%87%BA%E7%8E%B0%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:title" content="什么是fail-fast？什么是fail-safe？">
+<meta property="og:url" content="http://yoursite.com/2019/09/15/%E4%BB%80%E4%B9%88%E6%98%AFfail-fast%EF%BC%9F%E4%BB%80%E4%B9%88%E6%98%AFfail-safe%EF%BC%9F/index.html">
 <meta property="og:site_name" content="嘉升のblog">
-<meta property="og:description" content="步骤： 执行ps -e | grep apt找到占用系统源更新时的系统锁的进程  2.结束占用它的线程，输入命令sudo kill 进程ID号再次执行 ps -e | grep apt，发现已经没有占用apt -get的进程了  输入sudo apt-get update，成功！">
+<meta property="og:description" content="什么是fail-fast？什么是fail-safe？fail-fast快速失效机制。这是在Java集合框架中的一种机制。当多个线程对同一个集合的内容进行操作时（并发操作），就可能会产生fail-fast事件。例如：当某一个线程A通过iterator去遍历某集合的过程中，若该集合的内容被其他线程所改变了；那么线程A访问集合时，就会抛出ConcurrentModificationException异常">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.ax1x.com/2020/03/14/8QXxbt.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/03/14/8QjJq1.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/03/14/8QjtVx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/06/GyGU1K.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/06/GyGNp6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/06/GyGJt1.png">
 <meta property="article:published_time" content="2019-09-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-14T09:54:34.625Z">
+<meta property="article:modified_time" content="2020-04-06T09:43:09.616Z">
 <meta property="article:author" content="嘉升のblog">
-<meta property="article:tag" content="问题解决">
-<meta property="article:tag" content="linux">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="并发">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.ax1x.com/2020/03/14/8QXxbt.png">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/04/06/GyGU1K.png">
   
     <link rel="alternative" href="/atom.xml" title="嘉升のblog" type="application/atom+xml">
   
@@ -164,14 +164,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-执行sudo apt-get update出现问题" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-什么是fail-fast？什么是fail-safe？" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      在Ubuntu环境下执行sudo apt-get update出现无法获得锁 /var/lib/apt/lists/lock - open的问题解决方法
+      什么是fail-fast？什么是fail-safe？
     </h1>
   
 
@@ -182,7 +182,7 @@
               <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
         </span>
 
-<a href="/2019/09/15/%E6%89%A7%E8%A1%8Csudo%20apt-get%20update%E5%87%BA%E7%8E%B0%E9%97%AE%E9%A2%98/" class="archive-article-date">
+<a href="/2019/09/15/%E4%BB%80%E4%B9%88%E6%98%AFfail-fast%EF%BC%9F%E4%BB%80%E4%B9%88%E6%98%AFfail-safe%EF%BC%9F/" class="archive-article-date">
   	<time datetime="2019-09-14T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-15</time>
 </a>
 
@@ -194,7 +194,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-keyboard-o"></i>
         <span class="post-meta-item-text">  字数统计: </span>
-        <span class="post-count">74字</span>
+        <span class="post-count">533字</span>
       </span>
     </span>
 
@@ -203,7 +203,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-hourglass-half"></i>
         <span class="post-meta-item-text">  阅读时长: </span>
-        <span class="post-count">1分</span>
+        <span class="post-count">2分</span>
       </span>
     </span>
 </div>
@@ -217,14 +217,16 @@
       
 
         
-          <p><img src="https://s1.ax1x.com/2020/03/14/8QXxbt.png" alt="avator"></p>
-<h4 id="步骤："><a href="#步骤：" class="headerlink" title="步骤："></a>步骤：</h4><ol>
-<li>执行ps -e | grep apt找到占用系统源更新时的系统锁的进程<br><img src="https://s1.ax1x.com/2020/03/14/8QjJq1.png" alt="avator"></li>
-</ol>
-<p>2.结束占用它的线程，输入命令sudo kill 进程ID号<br>再次执行 ps -e | grep apt，发现已经没有占用apt -get的进程了<br><img src="https://s1.ax1x.com/2020/03/14/8QjtVx.png" alt="avator"></p>
-<ol start="3">
-<li>输入sudo apt-get update，成功！</li>
-</ol>
+          <h1 id="什么是fail-fast？什么是fail-safe？"><a href="#什么是fail-fast？什么是fail-safe？" class="headerlink" title="什么是fail-fast？什么是fail-safe？"></a>什么是fail-fast？什么是fail-safe？</h1><h2 id="fail-fast快速失效机制。"><a href="#fail-fast快速失效机制。" class="headerlink" title="fail-fast快速失效机制。"></a>fail-fast快速失效机制。</h2><p>这是在Java集合框架中的一种机制。当多个线程对同一个集合的内容进行操作时（并发操作），就可能会产生fail-fast事件。例如：当某一个线程A通过iterator去遍历某集合的过程中，若该集合的内容被其他线程所改变了；那么线程A访问集合时，就会抛出ConcurrentModificationException异常，产生fail-fast事件。</p>
+<p>下面是ArrayLlist结合源码中，堆这种机制的解释。</p>
+<p>除了iterator自己本身的方法，如remove和add对集合结构作出修改不会抛出异常，其它意图修改集合结构的行为，都会抛出ConcurrentModificationException。<br><img src="https://s1.ax1x.com/2020/04/06/GyGU1K.png" alt="avator"></p>
+<p>迭代器的快速失败机制是没有保证的，也就是这种机制是尽自己的最大努力抛出ConcurrentModificationException异常。官方的建议是fast-fail最好用于检测bug中。<br><img src="https://s1.ax1x.com/2020/04/06/GyGNp6.png" alt="avator"></p>
+<p>查看ArrayList中关于Iterator的部分源码：<br><br>可以看到next()等函数时都会先调用checkForComodification函数来检查modCount 和expectedModCount是否相等，如果不相等，则会抛出异常。<br><br>通过上面的remove函数（clear和sort等也会）的源码，我们知道modCount会++，所以如果在迭代器遍历元素的时候，修改了modeCount，也就是进行了remove操作，就会触发fail-fast机制抛出异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Itr</span> <span class="keyword">implements</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> cursor;       <span class="comment">// index of next element to return</span></span><br><span class="line">    <span class="keyword">int</span> lastRet = -<span class="number">1</span>; <span class="comment">// index of last element returned; -1 if no such</span></span><br><span class="line">    <span class="keyword">int</span> expectedModCount = modCount;</span><br><span class="line"></span><br><span class="line">    Itr() &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> cursor != size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        checkForComodification();</span><br><span class="line">       <span class="comment">//...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (lastRet &lt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException();</span><br><span class="line">        checkForComodification();</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">checkForComodification</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (modCount != expectedModCount)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="fail-safe"><a href="#fail-safe" class="headerlink" title="fail-safe"></a>fail-safe</h2><p>fail-safe很明显，就是一种安全机制，不会像fail-fast那样抛出ConcurrentModificationException异常。</p>
+<p>原因：如果在遍历的过程中，集合的结构被修改了，那么触发fail-safe机制，会把原集合的复制一份，继续在复制后的集合中遍历。</p>
+<p>缺点：复制会消耗额外的时间和空间开销，并且不能保证遍历的是最新的数据。<br><img src="https://s1.ax1x.com/2020/04/06/GyGJt1.png" alt="avator"></p>
 
         
       
@@ -237,11 +239,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">问题解决</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">linux</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">并发</a>
         		</li>
       		
 		</ul>
@@ -297,7 +299,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/15/%E6%89%A7%E8%A1%8Csudo%20apt-get%20update%E5%87%BA%E7%8E%B0%E9%97%AE%E9%A2%98/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/15/%E4%BB%80%E4%B9%88%E6%98%AFfail-fast%EF%BC%9F%E4%BB%80%E4%B9%88%E6%98%AFfail-safe%EF%BC%9F/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -312,18 +314,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/09/22/%E4%B9%90%E8%A7%82%E9%94%81CAS/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/09/15/%E6%89%A7%E8%A1%8Csudo%20apt-get%20update%E5%87%BA%E7%8E%B0%E9%97%AE%E9%A2%98/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          乐观锁CAS
+          在Ubuntu环境下执行sudo apt-get update出现无法获得锁 /var/lib/apt/lists/lock - open的问题解决方法
         
       </div>
     </a>
   
   
-    <a href="/2019/09/15/%E4%BB%80%E4%B9%88%E6%98%AFfail-fast%EF%BC%9F%E4%BB%80%E4%B9%88%E6%98%AFfail-safe%EF%BC%9F/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">什么是fail-fast？什么是fail-safe？</div>
+    <a href="/2019/09/08/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAABA%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">深入浅出ABA问题</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -350,7 +352,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#步骤："><span class="toc-number">1.</span> <span class="toc-text">步骤：</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是fail-fast？什么是fail-safe？"><span class="toc-number">1.</span> <span class="toc-text">什么是fail-fast？什么是fail-safe？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#fail-fast快速失效机制。"><span class="toc-number">1.1.</span> <span class="toc-text">fail-fast快速失效机制。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fail-safe"><span class="toc-number">1.2.</span> <span class="toc-text">fail-safe</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
