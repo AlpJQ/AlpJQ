@@ -336,20 +336,20 @@
 
 
   
-    <article id="post-JMM" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-把二叉树打印成多行" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/02/JMM/">第五篇</a>
+      <a class="article-title" href="/2020/03/02/%E6%8A%8A%E4%BA%8C%E5%8F%89%E6%A0%91%E6%89%93%E5%8D%B0%E6%88%90%E5%A4%9A%E8%A1%8C/">把二叉树打印成多行</a>
     </h1>
   
 
         
         
-<a href="/2020/03/02/JMM/" class="archive-article-date">
+<a href="/2020/03/02/%E6%8A%8A%E4%BA%8C%E5%8F%89%E6%A0%91%E6%89%93%E5%8D%B0%E6%88%90%E5%A4%9A%E8%A1%8C/" class="archive-article-date">
   	<time datetime="2020-03-02T11:43:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-02</time>
 </a>
 
@@ -361,7 +361,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-keyboard-o"></i>
         <span class="post-meta-item-text">  字数统计: </span>
-        <span class="post-count">0字</span>
+        <span class="post-count">167字</span>
       </span>
     </span>
 
@@ -384,7 +384,9 @@
       
 
         
-          
+          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>从上到下按层打印二叉树，同一层结点从左至右输出。每一层输出一行。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">public class TreeNode &#123;</span></span><br><span class="line"><span class="comment">    int val = 0;</span></span><br><span class="line"><span class="comment">    TreeNode left = null;</span></span><br><span class="line"><span class="comment">    TreeNode right = null;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    public TreeNode(int val) &#123;</span></span><br><span class="line"><span class="comment">        this.val = val;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    ArrayList&lt;ArrayList&lt;Integer&gt; &gt; Print(TreeNode pRoot) &#123;</span><br><span class="line">        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        ArrayList&lt;Integer&gt; out = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        LinkedList&lt;TreeNode&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(pRoot == <span class="keyword">null</span>) <span class="keyword">return</span> res;</span><br><span class="line">        TreeNode last = pRoot;</span><br><span class="line">        list.add(pRoot);</span><br><span class="line">        <span class="keyword">while</span>(!list.isEmpty())&#123;</span><br><span class="line">            pRoot = list.poll();</span><br><span class="line">            <span class="keyword">if</span>(pRoot.left != <span class="keyword">null</span>)&#123;</span><br><span class="line">                list.add(pRoot.left);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(pRoot.right != <span class="keyword">null</span>)&#123;</span><br><span class="line">                list.add(pRoot.right);</span><br><span class="line">            &#125;</span><br><span class="line">            out.add(pRoot.val);</span><br><span class="line">            <span class="keyword">if</span>(pRoot == last)&#123;</span><br><span class="line">                last = list.peekLast();</span><br><span class="line">                res.add(out);</span><br><span class="line">                out = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
         
       
     </div>
@@ -401,6 +403,14 @@
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">二叉树</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">队列</a>
         		</li>
       		
 		</ul>
@@ -421,7 +431,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/02/JMM/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/03/02/%E6%8A%8A%E4%BA%8C%E5%8F%89%E6%A0%91%E6%89%93%E5%8D%B0%E6%88%90%E5%A4%9A%E8%A1%8C/">展开全文 >></a>
         </p>
       
 
@@ -1079,7 +1089,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/09/Thread%E6%8A%80%E6%9C%AF%E7%82%B9/">算法1</a>
+      <a class="article-title" href="/2019/08/09/Thread%E6%8A%80%E6%9C%AF%E7%82%B9/">Thread技术点</a>
     </h1>
   
 
@@ -1228,21 +1238,21 @@
 
 
   
-    <article id="post-读写锁" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-按Z字形打印二叉树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/02/%E8%AF%BB%E5%86%99%E9%94%81/">算法2</a>
+      <a class="article-title" href="/2019/08/05/%E6%8C%89Z%E5%AD%97%E5%BD%A2%E6%89%93%E5%8D%B0%E4%BA%8C%E5%8F%89%E6%A0%91/">按Z字形打印二叉树</a>
     </h1>
   
 
         
         
-<a href="/2019/08/02/%E8%AF%BB%E5%86%99%E9%94%81/" class="archive-article-date">
-  	<time datetime="2019-08-02T11:44:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
+<a href="/2019/08/05/%E6%8C%89Z%E5%AD%97%E5%BD%A2%E6%89%93%E5%8D%B0%E4%BA%8C%E5%8F%89%E6%A0%91/" class="archive-article-date">
+  	<time datetime="2019-08-05T11:44:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-05</time>
 </a>
 
         <!-- 需要添加的位置 -->
@@ -1253,7 +1263,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-keyboard-o"></i>
         <span class="post-meta-item-text">  字数统计: </span>
-        <span class="post-count">544字</span>
+        <span class="post-count">276字</span>
       </span>
     </span>
 
@@ -1276,12 +1286,8 @@
       
 
         
-          <p>ReadWriteLock接口  </p>
-<p>&emsp;&emsp;排他锁（如ReentratLock等），也叫互斥锁，在同一时刻只允许一个线程进行访问，而读写锁在同一个时刻可以允许多个读线程访问，但是在写线程访问时，所有的读线程和其他线程均被阻塞。  </p>
-<p>&emsp;&emsp;与互斥锁相比，读-写锁允许对共享数据进行更高级别的并发访问。虽然一次只有一个线程（writer 线程）可以修改共享数据，但在许多情况下，任何数量的线程可以同时读取共享数据（reader 线程），读-写锁利用了这一点。从理论上讲，与互斥锁相比，使用读-写锁所允许的并发性增强将带来更大的性能提高。在实践中，只有在多处理器上并且只在访问模式适用于共享数据时，才能完全实现并发性增强。  </p>
-<p>&emsp;&emsp;不是所有情况都是读写锁并发性能更好的：与互斥锁相比，使用读-写锁能否提升性能则取决于读写操作期间读取数据相对于修改数据的频率，以及数据的争用——即在同一时间试图对该数据执行读取或写入操作的线程数。例如，某个最初用数据填充并且之后不经常对其进行修改的 collection，因为经常对其进行搜索（比如搜索某种目录），所以这样的 collection 是使用读-写锁的理想候选者。但是，如果数据更新变得频繁，数据在大部分时间都被独占锁，这时，就算存在并发性增强，也是微不足道的。更进一步地说，如果读取操作所用时间太短，则读-写锁实现（它本身就比互斥锁复杂）的开销将成为主要的执行成本，在许多读-写锁实现仍然通过一小段代码将所有线程序列化时更是如此。最终，只有通过分析和测量，才能确定应用程序是否适合使用读-写锁。</p>
-<p>实现类ReentrantReadWriteLock</p>
-
+          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>请实现一个函数按照之字形打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右至左的顺序打印，第三行按照从左到右的顺序打印，其他行以此类推。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">public class TreeNode &#123;</span></span><br><span class="line"><span class="comment">    int val = 0;</span></span><br><span class="line"><span class="comment">    TreeNode left = null;</span></span><br><span class="line"><span class="comment">    TreeNode right = null;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    public TreeNode(int val) &#123;</span></span><br><span class="line"><span class="comment">        this.val = val;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> ArrayList&lt;ArrayList&lt;Integer&gt;&gt; Print(TreeNode pRoot) &#123;</span><br><span class="line">        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        ArrayList&lt;Integer&gt; out = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        LinkedList&lt;TreeNode&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(pRoot == <span class="keyword">null</span>) <span class="keyword">return</span> res;</span><br><span class="line">        list.offer(pRoot);</span><br><span class="line">        <span class="keyword">boolean</span> flag = <span class="keyword">true</span>;<span class="comment">//左-&gt;右</span></span><br><span class="line">        TreeNode last = pRoot;</span><br><span class="line">        TreeNode nLast = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(!list.isEmpty())&#123;</span><br><span class="line">            <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">                pRoot = list.pollFirst();</span><br><span class="line">                <span class="keyword">if</span>(pRoot.left != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    list.offerLast(pRoot.left);</span><br><span class="line">                    nLast = nLast == <span class="keyword">null</span> ? pRoot.left : nLast;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(pRoot.right != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    list.offerLast(pRoot.right);</span><br><span class="line">                    nLast = nLast == <span class="keyword">null</span> ? pRoot.right : nLast;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                pRoot = list.pollLast();</span><br><span class="line">                <span class="keyword">if</span>(pRoot.right != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    list.offerFirst(pRoot.right);</span><br><span class="line">                    nLast = nLast == <span class="keyword">null</span> ? pRoot.right : nLast;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(pRoot.left != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    list.offerFirst(pRoot.left);</span><br><span class="line">                    nLast = nLast == <span class="keyword">null</span> ? pRoot.left : nLast;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            out.add(pRoot.val);</span><br><span class="line">            <span class="keyword">if</span>(pRoot == last)&#123;</span><br><span class="line">                res.add(out);</span><br><span class="line">                out = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">                flag = !flag;</span><br><span class="line">                last = nLast;</span><br><span class="line">                nLast = <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         
       
     </div>
@@ -1293,11 +1299,19 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">多线程</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JUC</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">双端队列</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">二叉树</a>
         		</li>
       		
 		</ul>
@@ -1309,7 +1323,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/并发//" class="article-tag-list-link color3">并发</a>
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
         		</li>
       		
 		</ul>
@@ -1318,7 +1332,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/02/%E8%AF%BB%E5%86%99%E9%94%81/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/08/05/%E6%8C%89Z%E5%AD%97%E5%BD%A2%E6%89%93%E5%8D%B0%E4%BA%8C%E5%8F%89%E6%A0%91/">展开全文 >></a>
         </p>
       
 
@@ -1348,21 +1362,21 @@
 
 
   
-    <article id="post-五段程序带你理解单例模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-不用加减乘除做加法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/02/%E4%BA%94%E6%AE%B5%E7%A8%8B%E5%BA%8F%E5%B8%A6%E4%BD%A0%E7%90%86%E8%A7%A3%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">五段程序带你深刻理解单例模式</a>
+      <a class="article-title" href="/2019/08/05/%E4%B8%8D%E7%94%A8%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4%E5%81%9A%E5%8A%A0%E6%B3%95/">不用加减乘除做加法</a>
     </h1>
   
 
         
         
-<a href="/2019/08/02/%E4%BA%94%E6%AE%B5%E7%A8%8B%E5%BA%8F%E5%B8%A6%E4%BD%A0%E7%90%86%E8%A7%A3%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2019-08-02T07:43:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
+<a href="/2019/08/05/%E4%B8%8D%E7%94%A8%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4%E5%81%9A%E5%8A%A0%E6%B3%95/" class="archive-article-date">
+  	<time datetime="2019-08-05T07:44:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-05</time>
 </a>
 
         <!-- 需要添加的位置 -->
@@ -1373,7 +1387,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-keyboard-o"></i>
         <span class="post-meta-item-text">  字数统计: </span>
-        <span class="post-count">1.4k字</span>
+        <span class="post-count">69字</span>
       </span>
     </span>
 
@@ -1382,7 +1396,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-hourglass-half"></i>
         <span class="post-meta-item-text">  阅读时长: </span>
-        <span class="post-count">5分</span>
+        <span class="post-count">1分</span>
       </span>
     </span>
 </div>
@@ -1396,14 +1410,8 @@
       
 
         
-          <h3 id="五段程序带你深刻理解单例模式"><a href="#五段程序带你深刻理解单例模式" class="headerlink" title="五段程序带你深刻理解单例模式"></a>五段程序带你深刻理解单例模式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jiasheng.single;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 单例模式就是让一个类只能构建一个对象的设计模式</span></span><br><span class="line"><span class="comment"> * 此程序主要用于演示懒汉式和饿汉式</span></span><br><span class="line"><span class="comment"> *      饿汉式：在构造器之前就已经主动创建好实例。</span></span><br><span class="line"><span class="comment"> *      懒汉式：延迟实例化，等构造器来创建实例。</span></span><br><span class="line"><span class="comment"> * 问题：线程安全有隐患。</span></span><br><span class="line"><span class="comment"> *  如果多个线程同时调用getInstance方法，刚好都通过了判空的操作，开始执行new操作</span></span><br><span class="line"><span class="comment"> *  就会造成new重复多次。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 利用静态变量来记录Singleton类的唯一实例</span></span><br><span class="line"><span class="comment">     * 它的初始值可以写成null，也可以写成new Singleton()</span></span><br><span class="line"><span class="comment">     * 分别可能造成懒汉式和饿汉式问题</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 要让一个类只能构建一个对象，自然不能让它随便去做new操作，</span></span><br><span class="line"><span class="comment">     * 只有Hungry类里面才可以调用构造方法，因此Hungry的构造方法</span></span><br><span class="line"><span class="comment">     * 是私有的</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">//私有的构造函数</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 静态工厂方法,获取单例对象。</span></span><br><span class="line"><span class="comment">     * 如果单例初始值instance是null，还未构建，则构建对象并返回。这种方式就是懒汉式,即延迟实例化。</span></span><br><span class="line"><span class="comment">     * 如果单例初始值一开始就通过new Singleton()主动创建，则不再需要判空操作。这种方式就是饿汉式。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jiasheng.single;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 单例模式</span></span><br><span class="line"><span class="comment"> * 破除第一版的线程安全问题</span></span><br><span class="line"><span class="comment"> * 方法一：在创建实例的方法加上synchronized，迫使每个线程在进入这个方法之前，要先等待其他线程</span></span><br><span class="line"><span class="comment"> *        离开该方法，也就是说，不会有两个线程同时进入这个方法，保证了线程安全。</span></span><br><span class="line"><span class="comment"> * 问题：严重影响性能！原因：只有第一次执行此方法，才真正需要同步，此后每次调用这个方法都是一种累赘</span></span><br><span class="line"><span class="comment"> * 同步一个方法可能造成程序执行效率下降100倍</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 方法二 ：DCL = double check lock  -&gt; 双重检测机制</span></span><br><span class="line"><span class="comment"> * 问题：存在指令重排问题（见下一个程序）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton2</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton2 instance = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton2</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//public static synchronized Singleton2 getInstance()&#123;&#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 第一个if判断：只有当instance为null，才会向同步方法走去。如果没有这个if判断，则每次调用这个</span></span><br><span class="line"><span class="comment">     * getInstance方法，都会进入synchronized同步区，性能严重下降</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 第二个if判断：假如有多个线程在同步方法入口那里，这时只能有一个线程（假设为A线程）可以进入</span></span><br><span class="line"><span class="comment">     * 同步代码块，如果是第一次进入，A线程在第二个if判断处判断为null，就会new Singleton2()。接着A线程</span></span><br><span class="line"><span class="comment">     * 退出synchronized区，此后即使有已经在synchronized处等待的线程进入同步代码块，还是会在第二个if判断处</span></span><br><span class="line"><span class="comment">     * 判定不为null，也就不会创建第二个instance。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton2 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(instance == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton2<span class="class">.<span class="keyword">class</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(instance == <span class="keyword">null</span>)&#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton2();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jiasheng.single;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 单例模式实现方式一：双重加锁机制+volatile</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * new Singleton3()在多线程环境下存在指令重排问题</span></span><br><span class="line"><span class="comment"> * new Singleton3()会被编译器编程成如下的JVM指令：</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * memory = allocate();  //1.分配对象的内存空间</span></span><br><span class="line"><span class="comment"> * ctorInstance(memory); //2.初始化对象</span></span><br><span class="line"><span class="comment"> * instance = memory;    //3.设置instance指向刚才分配的内存空间</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 这些指令顺序并不是一成不变的，有可能经过JVM和CPU的优化，指令重排为1 3 2</span></span><br><span class="line"><span class="comment"> * 当A线程执行完指令1,3之后，instance还未完成初始化工作，但是已经不再指向null</span></span><br><span class="line"><span class="comment"> * 此时B线程进来第一个if判断instance为null，就直接return instance;了，这样子</span></span><br><span class="line"><span class="comment"> * 返回的instance是空的</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 解决：使用volatile禁止指令重排</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 存在问题：可以通过反射new多个实例</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton3</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton3 instance = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton3</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Singleton3 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(instance == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton3<span class="class">.<span class="keyword">class</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton3();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jiasheng.single;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 单例模式实现方式二：静态内部类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 存在问题：可以通过反射new多个实例</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton4</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 静态内部类，外部无法访问，只有当调用Singleton4.getInstance()方法时，才能</span></span><br><span class="line"><span class="comment">     * 得到单例对象。</span></span><br><span class="line"><span class="comment">     * 【注意】单例对象instance初始化的时机并不是在单例类Singleton4被加载的时候，</span></span><br><span class="line"><span class="comment">     * 而是在调用getInstance()方法，使得静态内部类LazyHolder被加载的时候。</span></span><br><span class="line"><span class="comment">     * 因此，这种实现方式是利用ClassLoader的加载机制来实现懒加载的，并保证构建单例的线程安全</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">LazyHolder</span> </span>&#123;</span><br><span class="line">       <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton4 instance = <span class="keyword">new</span> Singleton4();</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="title">Singleton4</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton4 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> LazyHolder.instance;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 利用反射破坏单例的演示</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException </span>&#123;</span><br><span class="line">        Constructor con = Singleton4<span class="class">.<span class="keyword">class</span>.<span class="title">getDeclaredConstructor</span>()</span>;<span class="comment">//获取构造器</span></span><br><span class="line">        con.setAccessible(<span class="keyword">true</span>);<span class="comment">//设置私有为可访问</span></span><br><span class="line">        Singleton4 instance1 = (Singleton4) con.newInstance();</span><br><span class="line">        Singleton4 instance2 = (Singleton4) con.newInstance();</span><br><span class="line">        System.out.println(instance1.equals(instance2));<span class="comment">//false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jiasheng.single;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 单例模式实现方式三：枚举</span></span><br><span class="line"><span class="comment"> * 成功解决反射破坏性</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Singleton5 &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Singleton5 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试反射是否可以破坏单例模式</span></span><br><span class="line"><span class="comment">//java.lang.NoSuchMethodException提示利用反射new示例不成功</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException </span>&#123;</span><br><span class="line">        Constructor con = Singleton5<span class="class">.<span class="keyword">class</span>.<span class="title">getDeclaredConstructor</span>()</span>;<span class="comment">//获取构造器</span></span><br><span class="line">        con.setAccessible(<span class="keyword">true</span>);<span class="comment">//设置私有为可访问</span></span><br><span class="line">        Singleton5 instance1 = (Singleton5) con.newInstance();</span><br><span class="line">        Singleton5 instance2 = (Singleton5) con.newInstance();</span><br><span class="line">        System.out.println(instance1.equals(instance2));<span class="comment">//false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>写一个函数，求两个整数之和，要求在函数体内不得使用+、-、*、/四则运算符号。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Add</span><span class="params">(<span class="keyword">int</span> num1,<span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> temp = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(num2 != <span class="number">0</span>)&#123;</span><br><span class="line">            temp = num1 ^ num2;</span><br><span class="line">            num2 = (num1 &amp; num2) &lt;&lt; <span class="number">1</span>;</span><br><span class="line">            num1 = temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> num1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         
       
     </div>
@@ -1415,15 +1423,15 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">并发</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">位运算</a>
         		</li>
       		
 		</ul>
@@ -1435,7 +1443,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/categories/数据结构与算法//" class="article-tag-list-link color3">数据结构与算法</a>
         		</li>
       		
 		</ul>
@@ -1444,7 +1452,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/02/%E4%BA%94%E6%AE%B5%E7%A8%8B%E5%BA%8F%E5%B8%A6%E4%BD%A0%E7%90%86%E8%A7%A3%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/08/05/%E4%B8%8D%E7%94%A8%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4%E5%81%9A%E5%8A%A0%E6%B3%95/">展开全文 >></a>
         </p>
       
 
@@ -1476,7 +1484,7 @@
   
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1630,6 +1638,62 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JUC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">动态规划</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">堆</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">双端队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">DFS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">位运算</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">链表</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">约瑟夫环</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">二叉树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">字符串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数组</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">栈</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">递归</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">先序遍历</a>
               </li>
             
             <div class="clearfix"></div>
